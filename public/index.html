@@ -103,7 +103,7 @@
         const database = getDatabase(app);
         let todoInndex = 0;
 
-        function submitTodo() {
+        window.submitTodo = function() {
           let dbref = ref(database, `allTodos/${todoInndex}`)
             let dates = new Date();
             let todos = {
@@ -114,7 +114,6 @@
             set(dbref, todos);
 
         }
-        window.submitTodo = submitTodo
 
         let newRef = ref(database, "allTodos")
         onValue(newRef, function (snapshot) {
@@ -124,10 +123,11 @@
                 todoInndex = data.length;
                 data.map((user, index) => {
                   para.innerHTML +=`
-                  ${user.todoChat}
+                  <span>${user.todoChat}</span><br>
+
                   `
                   cloc.innerHTML = `
-                  ${user.time}
+                  <span>${user.time}</span>
                   `
                 })
             }
