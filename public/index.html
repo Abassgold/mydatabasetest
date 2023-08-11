@@ -1,0 +1,141 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>auth</title>
+</head>
+<!-- Font Awesome -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  rel="stylesheet"
+/>
+<!-- Google Fonts -->
+<link
+  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+  rel="stylesheet"
+/>
+<!-- MDB -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css"
+  rel="stylesheet"
+/>
+
+<body>
+    <section style="background-color: #eee;">
+        <div class="container py-5">
+      
+          <div class="row d-flex justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-6">
+      
+              <div class="card" id="chat2">
+                <div class="card-header d-flex justify-content-between align-items-center p-3">
+                  <h5 class="mb-0">Chat</h5>
+                  <button type="button" class="btn btn-primary btn-sm" data-mdb-ripple-color="dark">Let's Chat
+                    App</button>
+                </div>
+                <div class="card-body" data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
+      
+                  <div class="d-flex flex-row justify-content-start">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
+                      alt="avatar 1" style="width: 45px; height: 100%;">
+                    <div>
+                      <p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;" id="para">Hi</p>
+                      <p class="small ms-3 mb-3 rounded-3 text-muted" id="cloc">23:58</p>
+                    </div>
+                  </div>
+      
+                  <div class="divider d-flex align-items-center mb-4">
+                    <p class="text-center mx-3 mb-0" style="color: #a2aab7;">Today</p>
+                  </div>
+      
+                  <div class="d-flex flex-row justify-content-end mb-4 pt-1">
+                    <div>
+                      <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">Hiii, I'm good.</p>
+                      <p class="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">00:06</p>
+                    </div>
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
+                      alt="avatar 1" style="width: 45px; height: 100%;">
+                  </div>
+                </div>
+                <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
+                    alt="avatar 3" style="width: 40px; height: 100%;">
+                  <input type="text" class="form-control form-control-lg" id="chat"
+                    placeholder="Type message">
+                  <a class="ms-1 text-muted" href="#!"><i class="fas fa-paperclip"></i></a>
+                  <a class="ms-3 text-muted" href="#!"><i class="fas fa-smile"></i></a>
+                  <button onclick="submitTodo()">click</button>
+                  <a class="ms-3" href="#!"><i class="fas fa-paper-plane"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+
+    <script type="module">
+ // Import the functions you need from the SDKs you need
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-database.js";
+
+ // TODO: Add SDKs for Firebase products that you want to use
+ // https://firebase.google.com/docs/web/setup#available-libraries
+
+ // Your web app's Firebase configuration
+ const firebaseConfig = {
+   apiKey: "AIzaSyD4FVEaI34HExu3BZaYlC_CqaFdmZKO9CA",
+   authDomain: "chatapp-ed50e.firebaseapp.com",
+   databaseURL: "https://chatapp-ed50e-default-rtdb.firebaseio.com",
+   projectId: "chatapp-ed50e",
+   storageBucket: "chatapp-ed50e.appspot.com",
+   messagingSenderId: "171101142231",
+   appId: "1:171101142231:web:5326a72e3c85cbdc020492"
+ };
+
+
+        const app = initializeApp(firebaseConfig);
+   //     const auth = getAuth(app);
+        const database = getDatabase(app);
+        let todoInndex = 0;
+
+        function submitTodo() {
+          let dbref = ref(database, `allTodos/${todoInndex}`)
+            let dates = new Date();
+            let todos = {
+                todoChat: chat.value,
+                time: dates.getDate(),
+            }
+            console.log(todos)
+            set(dbref, todos);
+
+        }
+        window.submitTodo = submitTodo
+
+        let newRef = ref(database, "allTodos")
+        onValue(newRef, function (snapshot) {
+            const data = snapshot.val();
+            if (data) {
+                console.log(data)
+                todoInndex = data.length;
+                data.map((user, index) => {
+                  para.innerHTML +=`
+                  ${user.todoChat}
+                  `
+                  cloc.innerHTML = `
+                  ${user.time}
+                  `
+                })
+            }
+            else {
+                todoInndex = 0;
+                console.log("No data")
+            }
+        })
+    </script>
+</body>
+</html>
